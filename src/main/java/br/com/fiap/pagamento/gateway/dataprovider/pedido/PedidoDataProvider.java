@@ -28,14 +28,14 @@ public class PedidoDataProvider implements IPedidoDataProvider {
                 .accept(APPLICATION_JSON)
                 .body(request)
                 .retrieve()
-                .onStatus(status -> status.value() == 404, (req, res) -> {
-                    throw new UpdateStatusException("Pedido não encontrado");
-                })
-                .onStatus(status -> status.value() == 400, (req, res) -> {
-                    throw new UpdateStatusException("Erro ao atualizar pedido");
-                })
+//                .onStatus(status -> status.value() == 404, (req, res) -> {
+//                    throw new UpdateStatusException("Pedido não encontrado");
+//                })
+//                .onStatus(status -> status.value() == 400, (req, res) -> {
+//                    throw new UpdateStatusException("Erro ao atualizar pedido");
+//                })
                 .toEntity(PedidoResponseDto.class);
-        if (response.getBody() != null)
+        if (response.getBody() != null && response.getBody().status() != null)
             return "Recebido".equals(response.getBody().status().descricao());
         return false;
     }
