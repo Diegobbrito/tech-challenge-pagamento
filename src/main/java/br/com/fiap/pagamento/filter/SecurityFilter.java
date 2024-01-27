@@ -1,6 +1,6 @@
-package br.com.fiap.lanchonete.filter;
+package br.com.fiap.pagamento.filter;
 
-import br.com.fiap.lanchonete.security.JwtService;
+import br.com.fiap.pagamento.security.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

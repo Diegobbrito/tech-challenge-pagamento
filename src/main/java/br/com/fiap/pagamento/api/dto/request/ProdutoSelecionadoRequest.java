@@ -1,10 +1,10 @@
-package br.com.fiap.lanchonete.api.dto.request;
+package br.com.fiap.pagamento.api.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ProdutoSelecionadoRequest(
-        @Schema(example = "1")
-        Integer produtoId,
+
+        ProdutoRequest produto,
         @Schema(example = "1")
         Integer quantidade
 ) {

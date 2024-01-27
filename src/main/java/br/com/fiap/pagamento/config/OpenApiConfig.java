@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.config;
+package br.com.fiap.pagamento.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

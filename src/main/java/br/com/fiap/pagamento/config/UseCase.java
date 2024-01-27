@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.config;
+package br.com.fiap.pagamento.config;
 
 import org.springframework.stereotype.Component;
 

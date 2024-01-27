@@ -1,6 +1,7 @@
 package br.com.fiap.pagamento.gateway.repository.pagamento;
 
 import br.com.fiap.pagamento.core.entity.Pagamento;
+import br.com.fiap.pagamento.core.exception.PagamentoInexistenteException;
 import br.com.fiap.pagamento.gateway.repository.IPagamentoRepository;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +26,7 @@ public class PagamentoRepository implements IPagamentoRepository {
     public Pagamento buscarPorId(UUID pagamentoId) {
         final var optionalPagamento = repository.findById(pagamentoId);
         if (optionalPagamento.isEmpty())
-            //TODO: Criar exception
-            throw new IllegalArgumentException("Pagamento não encontrado");
+            throw new PagamentoInexistenteException("Id de pagamento não encontrado.");
         final var entity = optionalPagamento.get();
 
         return new Pagamento(entity.getId(), entity.getStatus(), entity.getValor(), entity.getCliente(), entity.getQrData());

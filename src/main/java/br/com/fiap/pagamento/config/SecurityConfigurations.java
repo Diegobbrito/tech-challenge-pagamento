@@ -1,6 +1,6 @@
-package br.com.fiap.lanchonete.config;
+package br.com.fiap.pagamento.config;
 
-import br.com.fiap.lanchonete.filter.SecurityFilter;
+import br.com.fiap.pagamento.filter.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
