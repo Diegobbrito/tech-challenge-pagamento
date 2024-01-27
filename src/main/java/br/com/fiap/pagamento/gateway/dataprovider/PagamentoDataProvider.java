@@ -1,7 +1,9 @@
-package br.com.fiap.lanchonete.gateway.dataprovider;
+package br.com.fiap.pagamento.gateway.dataprovider;
 
-import br.com.fiap.lanchonete.core.entity.Pedido;
+import br.com.fiap.pagamento.api.dto.request.ProdutoSelecionadoRequest;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class PagamentoDataProvider implements IPagamentoDataProvider {
@@ -13,9 +15,10 @@ public class PagamentoDataProvider implements IPagamentoDataProvider {
     }
 
     @Override
-    public String criarPagamento(Pedido entity) {
-        return dataProvider.criarPagamento(entity);
+    public String criarPagamento(List<ProdutoSelecionadoRequest> produtos, String cliente) {
+        return dataProvider.criarPagamento(produtos, cliente);
     }
+
     @Override
     public boolean validaPagamento(String pagamentoId) {
         return dataProvider.validaPagamento(pagamentoId);

@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.api.dto.request;
+package br.com.fiap.pagamento.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
