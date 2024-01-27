@@ -1,6 +1,7 @@
-package br.com.fiap.pagamento.gateway.dataprovider;
+package br.com.fiap.pagamento.gateway.dataprovider.pagamento;
 
 import br.com.fiap.pagamento.api.dto.request.ProdutoSelecionadoRequest;
+import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

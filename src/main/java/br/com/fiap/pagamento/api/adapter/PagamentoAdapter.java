@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public class PagamentoAdapter {
 
-    public static Pagamento toPagamento(BigDecimal valor, StatusEnum status, String cpf, String qrData) {
-        return new Pagamento(UUID.randomUUID(), status, valor, cpf, qrData);
+    public static Pagamento toPagamento(BigDecimal valor, StatusEnum status, String cpf, String qrData, Integer pedidoId) {
+        return new Pagamento(UUID.randomUUID(), status, valor, cpf, qrData, pedidoId);
     }
 
     public static PagamentoResponse toResponse(Pagamento pagamento) {

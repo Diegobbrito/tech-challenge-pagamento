@@ -6,6 +6,7 @@ import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
 import br.com.fiap.pagamento.config.UseCase;
 import br.com.fiap.pagamento.core.enumerator.StatusEnum;
 import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
+import br.com.fiap.pagamento.gateway.dataprovider.IPedidoDataProvider;
 import br.com.fiap.pagamento.gateway.repository.IPagamentoRepository;
 
 import java.util.UUID;
@@ -16,9 +17,12 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
     private final IPagamentoRepository pagamentoRepository;
     private final IPagamentoDataProvider pagamentoDataProvider;
 
-    public GerenciarPagamentoUseCase(IPagamentoRepository repository, IPagamentoDataProvider pagamentoDataProvider) {
+    private final IPedidoDataProvider pedidoDataProvider;
+
+    public GerenciarPagamentoUseCase(IPagamentoRepository repository, IPagamentoDataProvider pagamentoDataProvider, IPedidoDataProvider pedidoDataProvider) {
         this.pagamentoRepository = repository;
         this.pagamentoDataProvider = pagamentoDataProvider;
+        this.pedidoDataProvider = pedidoDataProvider;
     }
 
     @Override
@@ -29,7 +33,8 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
         if (checkPagamento) {
             pagamento.setStatus(StatusEnum.PAGO);
         }
-        pagamentoRepository.salvar(pagamento);
+        final var entity = pagamentoRepository.salvar(pagamento);
+        pedidoDataProvider.atualizarPedido(entity.getPedidoId());
     }
 
     @Override

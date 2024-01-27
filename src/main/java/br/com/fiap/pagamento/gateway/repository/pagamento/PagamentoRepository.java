@@ -19,7 +19,7 @@ public class PagamentoRepository implements IPagamentoRepository {
     @Override
     public Pagamento salvar(Pagamento pagamento) {
         final var entity = repository.save(new PagamentoEntity(pagamento));
-        return new Pagamento(entity.getId(), entity.getStatus(), entity.getValor(), entity.getCliente(), entity.getQrData());
+        return getPagamento(entity);
     }
 
     @Override
@@ -29,6 +29,16 @@ public class PagamentoRepository implements IPagamentoRepository {
             throw new PagamentoInexistenteException("Id de pagamento não encontrado.");
         final var entity = optionalPagamento.get();
 
-        return new Pagamento(entity.getId(), entity.getStatus(), entity.getValor(), entity.getCliente(), entity.getQrData());
+        return getPagamento(entity);
+    }
+
+    private Pagamento getPagamento(PagamentoEntity entity) {
+        final var id = entity.getId();
+        final var pedidoId = entity.getPedidoId();
+        final var status = entity.getStatus();
+        final var valor = entity.getValor();
+        final var cliente = entity.getCliente();
+        final var qrData = entity.getQrData();
+        return new Pagamento(id, status, valor, cliente, qrData, pedidoId);
     }
 }

@@ -29,7 +29,7 @@ public class CriarPagamentoUseCase implements ICriarPagamento {
             cpfFormatado = request.cpf().trim().replaceAll("\\.", "").replaceAll("-", "");
         }
         final var qrData = pagamentoDataProvider.criarPagamento(produtos, cpfFormatado);
-        Pagamento pagamento = PagamentoAdapter.toPagamento(valor, StatusEnum.PAGAMENTOPENDENTE, cpfFormatado, qrData);
+        Pagamento pagamento = PagamentoAdapter.toPagamento(valor, StatusEnum.PAGAMENTOPENDENTE, cpfFormatado, qrData, request.pedidoId());
         final var pagamentoSalvo = pagamentoRepository.salvar(pagamento);
 
         return PagamentoAdapter.toResponse(pagamentoSalvo);

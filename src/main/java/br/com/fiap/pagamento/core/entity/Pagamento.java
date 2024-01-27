@@ -7,18 +7,20 @@ import java.util.UUID;
 
 public class Pagamento {
     private UUID id;
+    private Integer pedidoId;
     private StatusEnum status;
     private BigDecimal valor;
     private String documentoCliente;
 
     private String qrData;
 
-    public Pagamento(UUID id, StatusEnum status, BigDecimal valor, String documentoCliente, String qrData) {
+    public Pagamento(UUID id, StatusEnum status, BigDecimal valor, String documentoCliente, String qrData, Integer pedidoId) {
         this.id = id;
         this.status = status;
         this.valor = valor;
         this.documentoCliente = documentoCliente;
         this.qrData = qrData;
+        this.pedidoId = pedidoId;
     }
 
     public UUID getId() {
@@ -43,5 +45,9 @@ public class Pagamento {
 
     public void setStatus(StatusEnum status) {
         this.status = status;
+    }
+
+    public Integer getPedidoId() {
+        return pedidoId;
     }
 }

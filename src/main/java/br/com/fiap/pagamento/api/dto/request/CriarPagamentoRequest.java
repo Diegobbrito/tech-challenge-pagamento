@@ -10,6 +10,7 @@ public record CriarPagamentoRequest(
         @Schema(example = "055.069.020-42")
         String cpf,
 
-        BigDecimal valor
+        BigDecimal valor,
+        Integer pedidoId
 ) {
 }

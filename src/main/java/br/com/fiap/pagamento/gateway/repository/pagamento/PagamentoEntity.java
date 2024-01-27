@@ -29,12 +29,15 @@ public class PagamentoEntity {
 
     private String qrData;
 
+    private Integer pedidoId;
+
     public PagamentoEntity(Pagamento pagamento) {
         this.id = pagamento.getId();
         this.valor = pagamento.getValor();
         this.cliente = pagamento.getDocumentoCliente();
         this.status = pagamento.getStatus();
         this.qrData = pagamento.getQrData();
+        this.pedidoId = pagamento.getPedidoId();
     }
 
 }
