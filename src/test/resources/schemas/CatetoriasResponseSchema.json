@@ -1,0 +1,13 @@
+{
+  "title": "Categorias Response",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {"type": "integer"},
+      "tipo": {"type": "string"},
+      "descricao": {"type": "string"}
+    },
+    "required": ["id", "tipo", "descricao"]
+  }
+}

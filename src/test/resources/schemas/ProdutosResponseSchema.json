@@ -1,0 +1,15 @@
+{
+  "title": "Produtos Response",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {"type": "integer"},
+      "nome": {"type": "string"},
+      "descricao": {"type": "string"},
+      "valor": {"type": "string"},
+      "imagemUrl": {"type": "string"}
+    },
+    "required": ["id", "nome", "descricao", "valor", "imagemUrl"]
+  }
+}

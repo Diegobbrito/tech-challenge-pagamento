@@ -14,21 +14,29 @@ public class PedidoDataProvider implements IPedidoDataProvider {
     @Value("pedido.host")
     private String pedidoHost;
 
-    RestClient restClient = RestClient.create();
+    private final RestClient restClient;
+
+    public PedidoDataProvider(RestClient restClient) {
+        this.restClient = restClient;
+    }
 
     @Override
-    public void atualizarPedido(Integer pedidoId) {
+    public boolean atualizarPedido(Integer pedidoId) {
         final var request = new PedidoStatusDto(2);
-        restClient.patch()
+        final var response = restClient.patch()
                 .uri(pedidoHost + pedidoId)
                 .accept(APPLICATION_JSON)
                 .body(request)
                 .retrieve()
-                .onStatus(status -> status.value() == 404, (res, response) -> {
+                .onStatus(status -> status.value() == 404, (req, res) -> {
                     throw new UpdateStatusException("Pedido não encontrado");
                 })
-                .onStatus(status -> status.value() == 400, (res, response) -> {
+                .onStatus(status -> status.value() == 400, (req, res) -> {
                     throw new UpdateStatusException("Erro ao atualizar pedido");
-                });
+                })
+                .toEntity(PedidoResponseDto.class);
+        if (response.getBody() != null)
+            return "Recebido".equals(response.getBody().status().descricao());
+        return false;
     }
 }
