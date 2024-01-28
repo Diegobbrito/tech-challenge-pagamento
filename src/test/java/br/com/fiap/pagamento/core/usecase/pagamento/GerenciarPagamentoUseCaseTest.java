@@ -70,7 +70,7 @@ class GerenciarPagamentoUseCaseTest {
         when(pagamentoRepository.buscarPorId(any(UUID.class))).thenReturn(pagamentoDominio);
         when(pagamentoDataProvider.validaPagamento(anyString())).thenReturn(true);
         when(pagamentoRepository.salvar(any(Pagamento.class))).thenReturn(pagamentoDominio);
-        doNothing().when(pedidoDataProvider).atualizarPedido(anyInt());
+        when(pedidoDataProvider.atualizarPedido(anyInt())).thenReturn(true);
         // Act
         useCase.validaPagamento("0f44927d-5a3b-449a-9e6a-7ba0bf4d74c5", pagamentosMock);
         // Assert

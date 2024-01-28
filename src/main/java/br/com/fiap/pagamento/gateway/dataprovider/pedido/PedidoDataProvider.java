@@ -1,6 +1,5 @@
 package br.com.fiap.pagamento.gateway.dataprovider.pedido;
 
-import br.com.fiap.pagamento.core.exception.UpdateStatusException;
 import br.com.fiap.pagamento.gateway.dataprovider.IPedidoDataProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,12 +27,6 @@ public class PedidoDataProvider implements IPedidoDataProvider {
                 .accept(APPLICATION_JSON)
                 .body(request)
                 .retrieve()
-//                .onStatus(status -> status.value() == 404, (req, res) -> {
-//                    throw new UpdateStatusException("Pedido não encontrado");
-//                })
-//                .onStatus(status -> status.value() == 400, (req, res) -> {
-//                    throw new UpdateStatusException("Erro ao atualizar pedido");
-//                })
                 .toEntity(PedidoResponseDto.class);
         if (response.getBody() != null && response.getBody().status() != null)
             return "Recebido".equals(response.getBody().status().descricao());
