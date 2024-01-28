@@ -15,7 +15,7 @@ public class PagamentoAdapter {
     }
 
     public static PagamentoResponse toResponse(Pagamento pagamento) {
-        return new PagamentoResponse(pagamento.getQrData(), pagamento.getStatus(), pagamento.getValor());
+        return new PagamentoResponse(pagamento.getId(), pagamento.getQrData(), pagamento.getStatus(), pagamento.getValor());
     }
 
     public static PagamentoStatusResponse toPedidoStatus(String status) {
