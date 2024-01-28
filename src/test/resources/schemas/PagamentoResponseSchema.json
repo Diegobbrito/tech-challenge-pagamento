@@ -1,15 +1,14 @@
 {
-  "title": "Produto Response",
+  "title": "Pagamento Response",
   "type": "object",
   "items": {
     "type": "object",
     "properties": {
-      "id": {"type": "integer"},
-      "nome": {"type": "string"},
-      "descricao": {"type": "string"},
-      "valor": {"type": "string"},
-      "imagemUrl": {"type": "string"}
+      "id": {"type": "string"},
+      "qrData": {"type": "string"},
+      "status": {"type": "string"},
+      "valor": {"type": "double"}
     },
-    "required": ["id", "nome", "descricao", "valor", "imagemUrl"]
+    "required": ["id", "qrData", "status", "valor"]
   }
 }

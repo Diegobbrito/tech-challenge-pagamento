@@ -9,7 +9,7 @@ Funcionalidade: API - Pagamentos
   Cenário: Consultar um pagamento
     Dado que um pagamento já foi registrado
     Quando requisitar a busca de um pagamento
-    Então o pagamento é exibido com sucesso
+    Então o status do pagamento é exibido com sucesso
 
   Cenário: Efetuar o pagamento
     Dado que um pagamento já foi registrado

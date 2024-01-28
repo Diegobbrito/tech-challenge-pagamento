@@ -1,0 +1,11 @@
+{
+  "title": "Status Response",
+  "type": "object",
+  "items": {
+    "type": "object",
+    "properties": {
+      "status": {"type": "integer"}
+    },
+    "required": ["status"]
+  }
+}
