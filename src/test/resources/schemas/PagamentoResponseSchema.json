@@ -1,0 +1,14 @@
+{
+  "title": "Pagamento Response",
+  "type": "object",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {"type": "string"},
+      "qrData": {"type": "string"},
+      "status": {"type": "string"},
+      "valor": {"type": "double"}
+    },
+    "required": ["id", "qrData", "status", "valor"]
+  }
+}
