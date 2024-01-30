@@ -7,7 +7,7 @@
       "id": {"type": "string"},
       "qrData": {"type": "string"},
       "status": {"type": "string"},
-      "valor": {"type": "double"}
+      "valor": {"type": "number"}
     },
     "required": ["id", "qrData", "status", "valor"]
   }
