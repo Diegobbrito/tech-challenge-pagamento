@@ -38,9 +38,9 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
     }
 
     @Override
-    public PagamentoStatusResponse consultarStatusDePagamento(String pagamentoId) {
-        final var pedido = pagamentoRepository.buscarPorId(UUID.fromString(pagamentoId));
-        if (pedido.getStatus().equals(StatusEnum.PAGAMENTOPENDENTE))
+    public PagamentoStatusResponse consultarStatusDePagamento(UUID pagamentoId) {
+        final var pedido = pagamentoRepository.buscarPorId(pagamentoId);
+        if (pedido.getStatus() == StatusEnum.PAGAMENTOPENDENTE)
             return PagamentoAdapter.toPedidoStatus("Pagamento Pendente");
         return PagamentoAdapter.toPedidoStatus("Pago");
     }

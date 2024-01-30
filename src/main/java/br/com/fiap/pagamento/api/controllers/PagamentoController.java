@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Tag(name = "Pedidos", description = "Controle de pedidos")
 @RestController
 @RequestMapping("/pagamentos")
@@ -34,7 +36,7 @@ public class PagamentoController {
 
     @Operation(summary = "Consulta status de pagamento")
     @GetMapping("/{pagamentoId}")
-    public ResponseEntity<PagamentoStatusResponse> detalheDePagamentoDoPedido(@Parameter(example = "1") @PathVariable String pagamentoId) {
+    public ResponseEntity<PagamentoStatusResponse> detalheDePagamentoDoPedido(@Parameter(example = "1") @PathVariable UUID pagamentoId) {
         return ResponseEntity.ok(gerenciarPagamentoUseCase.consultarStatusDePagamento(pagamentoId));
     }
 

@@ -2,14 +2,19 @@ package br.com.fiap.pagamento.gateway.repository.pagamento;
 
 import br.com.fiap.pagamento.core.entity.Pagamento;
 import br.com.fiap.pagamento.core.enumerator.StatusEnum;
-import jakarta.persistence.*;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 @Data
 @Document(collection = "pagamentos")
+@NoArgsConstructor
 public class PagamentoEntity {
 
     @Id
