@@ -3,6 +3,7 @@ package br.com.fiap.pagamento.bdd;
 
 import br.com.fiap.pagamento.api.dto.request.PagamentoRequest;
 import br.com.fiap.pagamento.api.dto.response.PagamentoResponse;
+import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
 import br.com.fiap.pagamento.utils.PagamentoHelper;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
@@ -49,11 +50,11 @@ public class DefinicaoPassos {
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get(ENDPOINT_BASE + "/{id}", pagamentoResponse.getId());
-        response.then().extract().as(PagamentoResponse.class);
+        response.then().extract().as(PagamentoStatusResponse.class);
     }
 
     @Então("o status do pagamento é exibido com sucesso")
-    public void o_pagamento_é_exibido_com_sucesso() {
+    public void statusDePagamentoExibidoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/StatusResponseSchema.json"));

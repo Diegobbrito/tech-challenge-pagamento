@@ -25,7 +25,7 @@ public abstract class PagamentoHelper {
                 "");
         var produtosSelecionados = new ProdutoSelecionadoRequest(produto, 1);
 
-        return new CriarPagamentoRequest(List.of(produtosSelecionados), "", new BigDecimal("19.99"), 1);
+        return new CriarPagamentoRequest(List.of(produtosSelecionados), "", new BigDecimal("19.99"), 2);
     }
 
     public static PagamentoResponse gerarPagamentoResponse() {
