@@ -83,7 +83,7 @@ class PagamentoControllerTest {
         when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
                 .thenReturn(pagamentoStatus);
 
-        mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(pagamentoStatus.status()));
