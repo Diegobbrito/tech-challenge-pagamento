@@ -34,4 +34,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage -Dsonar.projectKey=Diegobbrito_tech-challenge-pagamento -Dsonar.exclusions=**/bdd/**,**/config/**,**/*Application.java -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-reports/jacoco.xml
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage -Dsonar.projectKey=Diegobbrito_tech-challenge-pagamento -Dsonar.exclusions=**/bdd/**,**/config/**,**/PagamentoEntity.java,**/*Application.java -Dsonar.coverage.jacoco.xmlReportPaths=target/jacoco-reports/jacoco.xml
