@@ -1,39 +1,34 @@
 version: '3.1'
 services:
-  lanchonetedb:
-    image: "mysql:8.0"
+  pagamentodb:
+    image: mongo
     restart: always
     environment:
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USER}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD_ROOT}'
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - '${DB_PORT}:${DB_PORT}'
+      - "27017:27017"
     expose:
-      - '${DB_PORT}'
-    volumes:
-      - ./db:/docker-entrypoint-initdb.d
-      - lanchonete-data:/db
+      - '27017'
     networks:
-      - lanchonete-network
-  lanchoneteapp:
+      - pagamento-network
+  pagamentoapp:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 8080:8080
     environment:
-      - spring.datasource.url=jdbc:mysql://lanchonetedb:${DB_PORT}/${DB_DATABASE}?allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
-      - spring.datasource.username=${DB_USER}
-      - spring.datasource.password=${DB_PASSWORD}
+      SPRING_DATA_MONGODB_HOST: localhost
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: lanchonete
     depends_on:
-      - lanchonetedb
+      - pagamentodb
     links:
-      - lanchonetedb
+      - pagamentodb
     networks:
-      - lanchonete-network
+      - pagamento-network
 networks:
-  lanchonete-network:
+  pagamento-network:
 volumes:
-  lanchonete-data:
+  pagamento-data:
