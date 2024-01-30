@@ -4,27 +4,19 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      - MONGO_INITDB_DATABASE=lanchonete
     ports:
       - "27017:27017"
-    expose:
-      - '27017'
     networks:
       - pagamento-network
   pagamentoapp:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     ports:
-      - 8080:8080
-    environment:
-      SPRING_DATA_MONGODB_HOST: localhost
-      SPRING_DATA_MONGODB_PORT: 27017
-      SPRING_DATA_MONGODB_DATABASE: lanchonete
+      - "8081:8080"
     depends_on:
-      - pagamentodb
-    links:
       - pagamentodb
     networks:
       - pagamento-network
