@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
 class PagamentoControllerTest {
     private MockMvc mockMvc;
 
@@ -96,7 +98,7 @@ class PagamentoControllerTest {
         when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
                 .thenThrow(new PagamentoInexistenteException("Pagamento Inexistente"));
 
-        mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
         verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
@@ -107,7 +109,7 @@ class PagamentoControllerTest {
         when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
                 .thenThrow(new IllegalArgumentException("Pedido não encontrado"));
 
-        mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
         verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
