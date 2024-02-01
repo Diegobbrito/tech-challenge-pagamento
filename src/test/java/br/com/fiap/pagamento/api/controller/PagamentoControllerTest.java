@@ -93,24 +93,24 @@ class PagamentoControllerTest {
 
     @Test
     void deveRetornarErroAoConsultarStatusDePagamentoComIdInexistente() throws Exception {
-        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(anyString()))
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
                 .thenThrow(new PagamentoInexistenteException("Pagamento Inexistente"));
 
         mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(anyString());
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
     }
 
     @Test
     void deveRetornarErroAoConsultarStatusDePagamento() throws Exception {
-        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(anyString()))
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
                 .thenThrow(new IllegalArgumentException("Pedido não encontrado"));
 
         mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError());
-        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(anyString());
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
     }
 
     @Test
