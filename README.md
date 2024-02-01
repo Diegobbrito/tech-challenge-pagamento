@@ -24,7 +24,7 @@ A aplicação é iniciada com dados de categorias, produtos e status no banco de
 
 ## Stack utilizada
 
-**Banco de dados:** Mysql
+**Banco de dados:** MongoDB
 
 **Back-end:** Java, Springboot
 
