@@ -29,7 +29,7 @@ public abstract class PagamentoHelper {
     }
 
     public static PagamentoResponse gerarPagamentoResponse() {
-        return new PagamentoResponse("", StatusEnum.PAGAMENTOPENDENTE, new BigDecimal("19.99"));
+        return new PagamentoResponse(UUID.randomUUID(), "qrData", StatusEnum.PAGAMENTOPENDENTE, new BigDecimal("19.99"));
     }
 
     public static PagamentoRequest gerarPagamentoRealizadoRequest() {
