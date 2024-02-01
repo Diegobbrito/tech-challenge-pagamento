@@ -5,6 +5,7 @@ import br.com.fiap.pagamento.api.dto.request.CriarPagamentoRequest;
 import br.com.fiap.pagamento.api.dto.request.PagamentoRequest;
 import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
 import br.com.fiap.pagamento.api.handler.RestExceptionHandler;
+import br.com.fiap.pagamento.core.exception.PagamentoInexistenteException;
 import br.com.fiap.pagamento.core.usecase.pagamento.ICriarPagamento;
 import br.com.fiap.pagamento.core.usecase.pagamento.IGerenciarPagamento;
 import br.com.fiap.pagamento.utils.PagamentoHelper;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
 class PagamentoControllerTest {
     private MockMvc mockMvc;
 
@@ -87,6 +90,28 @@ class PagamentoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(pagamentoStatus.status()));
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
+    }
+
+    @Test
+    void deveRetornarErroAoConsultarStatusDePagamentoComIdInexistente() throws Exception {
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
+                .thenThrow(new PagamentoInexistenteException("Pagamento Inexistente"));
+
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
+    }
+
+    @Test
+    void deveRetornarErroAoConsultarStatusDePagamento() throws Exception {
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
+                .thenThrow(new IllegalArgumentException("Pedido não encontrado"));
+
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
         verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
     }
 

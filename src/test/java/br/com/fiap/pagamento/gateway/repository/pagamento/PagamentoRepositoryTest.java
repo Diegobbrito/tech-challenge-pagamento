@@ -1,6 +1,7 @@
 package br.com.fiap.pagamento.gateway.repository.pagamento;
 
 import br.com.fiap.pagamento.core.entity.Pagamento;
+import br.com.fiap.pagamento.core.exception.PagamentoInexistenteException;
 import br.com.fiap.pagamento.utils.PagamentoHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -51,6 +53,13 @@ class PagamentoRepositoryTest {
         assertThat(pagamento)
                 .extracting(Pagamento::getId)
                 .isEqualTo(pagamentoEntity.getId());
+    }
+
+    @Test
+    void deveRetornarErroAoConsultarStatusDePagamentoComIdInexistente() {
+        assertThatThrownBy(() -> pagamentoRepository.buscarPorId(UUID.fromString("0f44927d-5a3b-449a-9e6a-7ba0bf4d74c5")))
+                .isInstanceOf(PagamentoInexistenteException.class)
+                .hasMessage("Id de pagamento não encontrado.");
     }
 
 
