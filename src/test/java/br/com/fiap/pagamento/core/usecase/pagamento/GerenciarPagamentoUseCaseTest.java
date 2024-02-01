@@ -51,7 +51,7 @@ class GerenciarPagamentoUseCaseTest {
         var pagamentoDominio = PagamentoHelper.gerarPagamento();
         when(pagamentoRepository.buscarPorId(any(UUID.class))).thenReturn(pagamentoDominio);
         // Act
-        var produto = useCase.consultarStatusDePagamento("0f44927d-5a3b-449a-9e6a-7ba0bf4d74c5");
+        var produto = useCase.consultarStatusDePagamento(UUID.fromString("0f44927d-5a3b-449a-9e6a-7ba0bf4d74c5"));
         // Assert
         verify(pagamentoRepository, times(1)).buscarPorId(any(UUID.class));
         assertThat(produto)

@@ -10,9 +10,9 @@ import java.util.UUID;
 @Component
 public class PagamentoRepository implements IPagamentoRepository {
 
-    private final JpaPagamentoRepository repository;
+    private final MongoPagamentoRepository repository;
 
-    public PagamentoRepository(JpaPagamentoRepository repository) {
+    public PagamentoRepository(MongoPagamentoRepository repository) {
         this.repository = repository;
     }
 

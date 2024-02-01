@@ -4,7 +4,7 @@
   "items": {
     "type": "object",
     "properties": {
-      "status": {"type": "integer"}
+      "status": {"type": "string"}
     },
     "required": ["status"]
   }

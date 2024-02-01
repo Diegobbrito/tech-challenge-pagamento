@@ -16,7 +16,6 @@ public class JwtService {
     private String secret;
 
     public Claims parseToken(String token) {
-
         SecretKey key =
                 Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         return Jwts.parserBuilder()
