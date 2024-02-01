@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.UUID;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -79,14 +81,14 @@ class PagamentoControllerTest {
     @Test
     void devePermitirConsultarStatusDePagamento() throws Exception {
         var pagamentoStatus = new PagamentoStatusResponse("Pagamento pendente");
-        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(anyString()))
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
                 .thenReturn(pagamentoStatus);
 
-        mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(pagamentoStatus.status()));
-        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(anyString());
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
     }
 
     @Test

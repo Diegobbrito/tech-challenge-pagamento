@@ -23,7 +23,7 @@ class PagamentoRepositoryTest {
     private PagamentoRepository pagamentoRepository;
 
     @Mock
-    private JpaPagamentoRepository jpaRepository;
+    private MongoPagamentoRepository jpaRepository;
 
     AutoCloseable openMocks;
 

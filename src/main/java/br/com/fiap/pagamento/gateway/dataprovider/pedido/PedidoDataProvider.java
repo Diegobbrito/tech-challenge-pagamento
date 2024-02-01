@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.Optional;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Component
 public class PedidoDataProvider implements IPedidoDataProvider {
 
-    @Value("pedido.host")
+    @Value("${pedido.host}")
     private String pedidoHost;
 
     private final RestClient restClient;
@@ -22,14 +24,20 @@ public class PedidoDataProvider implements IPedidoDataProvider {
     @Override
     public boolean atualizarPedido(Integer pedidoId) {
         final var request = new PedidoStatusDto(2);
-        final var response = restClient.patch()
-                .uri(pedidoHost + pedidoId)
+        PedidoResponseDto response = null;
+        response = restClient.patch()
+                .uri(pedidoHost +"/"+ pedidoId)
                 .accept(APPLICATION_JSON)
                 .body(request)
                 .retrieve()
-                .toEntity(PedidoResponseDto.class);
-        if (response.getBody() != null && response.getBody().status() != null)
-            return "Recebido".equals(response.getBody().status().descricao());
+                .toEntity(PedidoResponseDto.class).getBody();
+
+        if (response != null)
+            return Optional.ofNullable(response.status().descricao())
+                    .map("Recebido"::equals)
+                    .orElse(false);
+
         return false;
+
     }
 }
