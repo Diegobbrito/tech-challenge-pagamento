@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler
-    public ResponseEntity<ExceptionDetails> handlerPedidoInexistenteException(PagamentoInexistenteException ex) {
+    public ResponseEntity<ExceptionDetails> handlerPagamentoInexistenteException(PagamentoInexistenteException ex) {
         final var details = new ExceptionDetails(ex.getMessage());
         return new ResponseEntity(details, HttpStatus.NOT_FOUND);
     }

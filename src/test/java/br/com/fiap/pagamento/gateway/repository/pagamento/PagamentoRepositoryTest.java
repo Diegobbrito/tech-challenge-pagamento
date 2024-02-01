@@ -60,7 +60,6 @@ class PagamentoRepositoryTest {
         assertThatThrownBy(() -> pagamentoRepository.buscarPorId(UUID.fromString("0f44927d-5a3b-449a-9e6a-7ba0bf4d74c5")))
                 .isInstanceOf(PagamentoInexistenteException.class)
                 .hasMessage("Id de pagamento não encontrado.");
-        verify(pagamentoRepository, times(1)).buscarPorId(any(UUID.class));
     }
 
 

@@ -5,6 +5,7 @@ import br.com.fiap.pagamento.api.dto.request.CriarPagamentoRequest;
 import br.com.fiap.pagamento.api.dto.request.PagamentoRequest;
 import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
 import br.com.fiap.pagamento.api.handler.RestExceptionHandler;
+import br.com.fiap.pagamento.core.exception.PagamentoInexistenteException;
 import br.com.fiap.pagamento.core.usecase.pagamento.ICriarPagamento;
 import br.com.fiap.pagamento.core.usecase.pagamento.IGerenciarPagamento;
 import br.com.fiap.pagamento.utils.PagamentoHelper;
@@ -85,6 +86,28 @@ class PagamentoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(pagamentoStatus.status()));
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(anyString());
+    }
+
+    @Test
+    void deveRetornarErroAoConsultarStatusDePagamentoComIdInexistente() throws Exception {
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(anyString()))
+                .thenThrow(new PagamentoInexistenteException("Pagamento Inexistente"));
+
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(anyString());
+    }
+
+    @Test
+    void deveRetornarErroAoConsultarStatusDePagamento() throws Exception {
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(anyString()))
+                .thenThrow(new IllegalArgumentException("Pedido não encontrado"));
+
+        mockMvc.perform(get("/pagamentos/{pagamentoId}", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
         verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(anyString());
     }
 
