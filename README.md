@@ -3,6 +3,12 @@
 Projeto desenvolvido para o Tech Challenge da Pos Tech FIAP+Alura.
 Aplicação para integração de meios de pagamento e controle de pagamentos realizados.
 
+## Video
+
+Gravamos um video sobre a nossa quarta parte do projeto:
+
+- https://youtu.be/MrVDanTUrKI
+
 ## Link da projeto no SonarCloud
 
 - [SonarCloud - Pagamento](https://sonarcloud.io/project/overview?id=Diegobbrito_tech-challenge-pagamento)
