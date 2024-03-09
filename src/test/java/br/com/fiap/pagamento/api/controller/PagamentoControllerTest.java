@@ -42,7 +42,7 @@ class PagamentoControllerTest {
     @BeforeEach
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
-        PagamentoController mensagemController = new PagamentoController(criarPagamentoUseCase, gerenciarPagamentoUseCase);
+        PagamentoController mensagemController = new PagamentoController(gerenciarPagamentoUseCase);
         mockMvc = MockMvcBuilders.standaloneSetup(mensagemController)
                 .setControllerAdvice(new RestExceptionHandler())
                 .addFilter((request, response, chain) -> {
@@ -58,36 +58,16 @@ class PagamentoControllerTest {
     }
 
     @Test
-    void devePermitirRegistrarPagamento() throws Exception {
-
-        var pagamentoRequest = PagamentoHelper.gerarPagamentoRequest();
-        var pagamentoResponse = PagamentoHelper.gerarPagamentoResponse();
-        when(criarPagamentoUseCase.criar(any(CriarPagamentoRequest.class)))
-                .thenReturn(pagamentoResponse);
-
-        mockMvc.perform(post("/pagamentos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(pagamentoRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.qrData").value(pagamentoResponse.getQrData()))
-                .andExpect(jsonPath("$.valor").value(pagamentoResponse.getValor()));
-
-        verify(criarPagamentoUseCase, times(1))
-                .criar(any(CriarPagamentoRequest.class));
-
-    }
-
-    @Test
     void devePermitirConsultarStatusDePagamento() throws Exception {
         var pagamentoStatus = new PagamentoStatusResponse("Pagamento pendente");
-        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(UUID.class)))
+        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(Integer.class)))
                 .thenReturn(pagamentoStatus);
 
         mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(pagamentoStatus.status()));
-        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(UUID.class));
+        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(Integer.class));
     }
 
     @Test

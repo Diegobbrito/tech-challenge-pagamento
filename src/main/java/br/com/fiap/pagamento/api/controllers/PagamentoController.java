@@ -19,25 +19,17 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/pagamentos")
 public class PagamentoController {
-    private final ICriarPagamento criarPagamentoUseCase;
+
     private final IGerenciarPagamento gerenciarPagamentoUseCase;
 
-    public PagamentoController(ICriarPagamento criarPagamentoUseCase, IGerenciarPagamento gerenciarPagamentoUseCase) {
-        this.criarPagamentoUseCase = criarPagamentoUseCase;
+    public PagamentoController(IGerenciarPagamento gerenciarPagamentoUseCase) {
         this.gerenciarPagamentoUseCase = gerenciarPagamentoUseCase;
     }
 
-    @Operation(summary = "Criação de pagamento")
-    @PostMapping
-    public ResponseEntity<PagamentoResponse> criarPagamento(@RequestBody CriarPagamentoRequest request) {
-        final var response = criarPagamentoUseCase.criar(request);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
     @Operation(summary = "Consulta status de pagamento")
-    @GetMapping("/{pagamentoId}")
-    public ResponseEntity<PagamentoStatusResponse> detalheDePagamentoDoPedido(@Parameter(example = "1") @PathVariable UUID pagamentoId) {
-        return ResponseEntity.ok(gerenciarPagamentoUseCase.consultarStatusDePagamento(pagamentoId));
+    @GetMapping("/{pedidoId}")
+    public ResponseEntity<PagamentoStatusResponse> detalheDePagamentoDoPedido(@Parameter(example = "1") @PathVariable Integer pedidoId) {
+        return ResponseEntity.ok(gerenciarPagamentoUseCase.consultarStatusDePagamento(pedidoId));
     }
 
 

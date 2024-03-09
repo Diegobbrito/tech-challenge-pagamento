@@ -8,6 +8,7 @@ import br.com.fiap.pagamento.core.entity.Pagamento;
 import br.com.fiap.pagamento.core.enumerator.StatusEnum;
 import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
 import br.com.fiap.pagamento.gateway.repository.IPagamentoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 public class CriarPagamentoUseCase implements ICriarPagamento {
@@ -20,18 +21,17 @@ public class CriarPagamentoUseCase implements ICriarPagamento {
         this.pagamentoDataProvider = pagamentoDataProvider;
     }
 
+    @Transactional
     @Override
-    public PagamentoResponse criar(CriarPagamentoRequest request) {
+    public void criar(CriarPagamentoRequest request) {
         final var produtos = request.produtos();
         final var valor = request.valor();
         String cpfFormatado = "";
         if (request.cpf() != null && !request.cpf().isBlank()) {
-            cpfFormatado = request.cpf().trim().replaceAll("\\.", "").replaceAll("-", "");
+            cpfFormatado = request.cpf().trim().replaceAll("\\.", "").replace("-", "");
         }
         final var qrData = pagamentoDataProvider.criarPagamento(produtos, cpfFormatado);
         Pagamento pagamento = PagamentoAdapter.toPagamento(valor, StatusEnum.PAGAMENTOPENDENTE, cpfFormatado, qrData, request.pedidoId());
-        final var pagamentoSalvo = pagamentoRepository.salvar(pagamento);
-
-        return PagamentoAdapter.toResponse(pagamentoSalvo);
+        pagamentoRepository.salvar(pagamento);
     }
 }

@@ -7,7 +7,9 @@ import br.com.fiap.pagamento.config.UseCase;
 import br.com.fiap.pagamento.core.enumerator.StatusEnum;
 import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
 import br.com.fiap.pagamento.gateway.dataprovider.IPedidoDataProvider;
+import br.com.fiap.pagamento.gateway.messaging.IPedidoQueue;
 import br.com.fiap.pagamento.gateway.repository.IPagamentoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -16,15 +18,16 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
 
     private final IPagamentoRepository pagamentoRepository;
     private final IPagamentoDataProvider pagamentoDataProvider;
+    private final IPedidoQueue pedidoQueue;
+    private final IClienteQueue clienteQueue;
 
-    private final IPedidoDataProvider pedidoDataProvider;
-
-    public GerenciarPagamentoUseCase(IPagamentoRepository repository, IPagamentoDataProvider pagamentoDataProvider, IPedidoDataProvider pedidoDataProvider) {
+    public GerenciarPagamentoUseCase(IPagamentoRepository repository, IPagamentoDataProvider pagamentoDataProvider, IPedidoQueue pedidoQueue) {
         this.pagamentoRepository = repository;
         this.pagamentoDataProvider = pagamentoDataProvider;
-        this.pedidoDataProvider = pedidoDataProvider;
+        this.pedidoQueue = pedidoQueue;
     }
 
+    @Transactional
     @Override
     public void validaPagamento(String pagamentoId, PagamentoRequest request) {
 
@@ -34,12 +37,12 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
             pagamento.setStatus(StatusEnum.PAGO);
         }
         final var entity = pagamentoRepository.salvar(pagamento);
-        pedidoDataProvider.atualizarPedido(entity.getPedidoId());
+        pedidoQueue.publicarAtualizacaoStatusPedido(entity.getPedidoId());
     }
 
     @Override
-    public PagamentoStatusResponse consultarStatusDePagamento(UUID pagamentoId) {
-        final var pedido = pagamentoRepository.buscarPorId(pagamentoId);
+    public PagamentoStatusResponse consultarStatusDePagamento(Integer pagamentoId) {
+        final var pedido = pagamentoRepository.buscarPorPedidoId(pagamentoId);
         if (pedido.getStatus() == StatusEnum.PAGAMENTOPENDENTE)
             return PagamentoAdapter.toPedidoStatus("Pagamento Pendente");
         return PagamentoAdapter.toPedidoStatus("Pago");

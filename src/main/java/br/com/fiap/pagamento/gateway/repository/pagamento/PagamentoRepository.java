@@ -32,6 +32,16 @@ public class PagamentoRepository implements IPagamentoRepository {
         return getPagamento(entity);
     }
 
+    @Override
+    public Pagamento buscarPorPedidoId(Integer pedidoId) {
+        final var optionalPagamento = repository.findByPedidoId(pedidoId);
+        if (optionalPagamento.isEmpty())
+            throw new PagamentoInexistenteException("Id de pagamento não encontrado.");
+        final var entity = optionalPagamento.get();
+
+        return getPagamento(entity);
+    }
+
     private Pagamento getPagamento(PagamentoEntity entity) {
         final var id = entity.getId();
         final var pedidoId = entity.getPedidoId();

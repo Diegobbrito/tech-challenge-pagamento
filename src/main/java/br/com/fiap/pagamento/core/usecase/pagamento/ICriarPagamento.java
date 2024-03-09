@@ -4,5 +4,5 @@ import br.com.fiap.pagamento.api.dto.request.CriarPagamentoRequest;
 import br.com.fiap.pagamento.api.dto.response.PagamentoResponse;
 
 public interface ICriarPagamento {
-    PagamentoResponse criar(CriarPagamentoRequest request);
+    void criar(CriarPagamentoRequest request);
 }

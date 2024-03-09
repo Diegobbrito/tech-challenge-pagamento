@@ -9,5 +9,5 @@ public interface IGerenciarPagamento {
 
     void validaPagamento(String pedidoId, PagamentoRequest request);
 
-    PagamentoStatusResponse consultarStatusDePagamento(UUID pedidoId);
+    PagamentoStatusResponse consultarStatusDePagamento(Integer pedidoId);
 }

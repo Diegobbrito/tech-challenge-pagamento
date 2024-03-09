@@ -7,5 +7,6 @@ import java.util.UUID;
 public interface IPagamentoRepository {
     Pagamento salvar(Pagamento pagamento);
 
-    Pagamento buscarPorId(UUID pedidoId);
+    Pagamento buscarPorId(UUID pagamentoId);
+    Pagamento buscarPorPedidoId(Integer pedidoId);
 }
