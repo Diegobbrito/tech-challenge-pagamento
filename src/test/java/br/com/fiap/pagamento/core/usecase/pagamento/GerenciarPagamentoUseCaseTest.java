@@ -1,10 +1,9 @@
 package br.com.fiap.pagamento.core.usecase.pagamento;
 
 
-import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
 import br.com.fiap.pagamento.core.entity.Pagamento;
 import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
-import br.com.fiap.pagamento.gateway.dataprovider.IPedidoDataProvider;
+import br.com.fiap.pagamento.gateway.messaging.IClienteQueue;
 import br.com.fiap.pagamento.gateway.messaging.IPedidoQueue;
 import br.com.fiap.pagamento.gateway.repository.IPagamentoRepository;
 import br.com.fiap.pagamento.utils.PagamentoHelper;
@@ -16,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -32,35 +30,20 @@ class GerenciarPagamentoUseCaseTest {
     @Mock
     private IPedidoQueue pedidoQueue;
 
+    @Mock
+    private IClienteQueue clienteQueue;
+
     AutoCloseable openMocks;
 
     @BeforeEach
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
-        useCase = new GerenciarPagamentoUseCase(pagamentoRepository, pagamentoDataProvider, pedidoQueue);
+        useCase = new GerenciarPagamentoUseCase(pagamentoRepository, pagamentoDataProvider, pedidoQueue, clienteQueue);
     }
 
     @AfterEach
     void tearDown() throws Exception {
         openMocks.close();
-    }
-
-
-    @Test
-    void devePermitirConsultarStatusDePagamento() {
-        // Arrange
-        var pagamentoDominio = PagamentoHelper.gerarPagamento();
-        when(pagamentoRepository.buscarPorId(any(UUID.class))).thenReturn(pagamentoDominio);
-        // Act
-        var produto = useCase.consultarStatusDePagamento(1);
-        // Assert
-        verify(pagamentoRepository, times(1)).buscarPorId(any(UUID.class));
-        assertThat(produto)
-                .isInstanceOf(PagamentoStatusResponse.class)
-                .isNotNull();
-        assertThat(produto)
-                .extracting(PagamentoStatusResponse::status)
-                .isEqualTo("Pagamento Pendente");
     }
 
     @Test

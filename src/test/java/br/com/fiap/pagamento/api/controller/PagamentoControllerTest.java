@@ -1,11 +1,8 @@
 package br.com.fiap.pagamento.api.controller;
 
 import br.com.fiap.pagamento.api.controllers.PagamentoController;
-import br.com.fiap.pagamento.api.dto.request.CriarPagamentoRequest;
 import br.com.fiap.pagamento.api.dto.request.PagamentoRequest;
-import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
 import br.com.fiap.pagamento.api.handler.RestExceptionHandler;
-import br.com.fiap.pagamento.core.usecase.pagamento.ICriarPagamento;
 import br.com.fiap.pagamento.core.usecase.pagamento.IGerenciarPagamento;
 import br.com.fiap.pagamento.utils.PagamentoHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,20 +15,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.UUID;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PagamentoControllerTest {
     private MockMvc mockMvc;
-
-    @Mock
-    private ICriarPagamento criarPagamentoUseCase;
     @Mock
     private IGerenciarPagamento gerenciarPagamentoUseCase;
     AutoCloseable openMocks;
@@ -55,19 +45,6 @@ class PagamentoControllerTest {
     @AfterEach
     void tearDown() throws Exception {
         openMocks.close();
-    }
-
-    @Test
-    void devePermitirConsultarStatusDePagamento() throws Exception {
-        var pagamentoStatus = new PagamentoStatusResponse("Pagamento pendente");
-        when(gerenciarPagamentoUseCase.consultarStatusDePagamento(any(Integer.class)))
-                .thenReturn(pagamentoStatus);
-
-        mockMvc.perform(get("/pagamentos/{pagamentoId}", UUID.randomUUID())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value(pagamentoStatus.status()));
-        verify(gerenciarPagamentoUseCase, times(1)).consultarStatusDePagamento(any(Integer.class));
     }
 
     @Test
