@@ -2,11 +2,11 @@ package br.com.fiap.pagamento.core.usecase.pagamento;
 
 import br.com.fiap.pagamento.api.adapter.PagamentoAdapter;
 import br.com.fiap.pagamento.api.dto.request.PagamentoRequest;
-import br.com.fiap.pagamento.api.dto.response.PagamentoStatusResponse;
+import br.com.fiap.pagamento.api.dto.response.PagamentoResponse;
 import br.com.fiap.pagamento.config.UseCase;
 import br.com.fiap.pagamento.core.enumerator.StatusEnum;
 import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
-import br.com.fiap.pagamento.gateway.dataprovider.IPedidoDataProvider;
+import br.com.fiap.pagamento.gateway.messaging.IClienteQueue;
 import br.com.fiap.pagamento.gateway.messaging.IPedidoQueue;
 import br.com.fiap.pagamento.gateway.repository.IPagamentoRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +21,11 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
     private final IPedidoQueue pedidoQueue;
     private final IClienteQueue clienteQueue;
 
-    public GerenciarPagamentoUseCase(IPagamentoRepository repository, IPagamentoDataProvider pagamentoDataProvider, IPedidoQueue pedidoQueue) {
+    public GerenciarPagamentoUseCase(IPagamentoRepository repository, IPagamentoDataProvider pagamentoDataProvider, IPedidoQueue pedidoQueue, IClienteQueue clienteQueue) {
         this.pagamentoRepository = repository;
         this.pagamentoDataProvider = pagamentoDataProvider;
         this.pedidoQueue = pedidoQueue;
+        this.clienteQueue = clienteQueue;
     }
 
     @Transactional
@@ -38,13 +39,12 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
         }
         final var entity = pagamentoRepository.salvar(pagamento);
         pedidoQueue.publicarAtualizacaoStatusPedido(entity.getPedidoId());
+        clienteQueue.publicarResultadoPagamento(entity, checkPagamento);
     }
 
     @Override
-    public PagamentoStatusResponse consultarStatusDePagamento(Integer pagamentoId) {
-        final var pedido = pagamentoRepository.buscarPorPedidoId(pagamentoId);
-        if (pedido.getStatus() == StatusEnum.PAGAMENTOPENDENTE)
-            return PagamentoAdapter.toPedidoStatus("Pagamento Pendente");
-        return PagamentoAdapter.toPedidoStatus("Pago");
+    public PagamentoResponse consultarPagamento(Integer pagamentoId) {
+        final var pagamento = pagamentoRepository.buscarPorPedidoId(pagamentoId);
+        return PagamentoAdapter.toResponse(pagamento);
     }
 }

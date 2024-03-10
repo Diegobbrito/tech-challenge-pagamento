@@ -1,6 +1,5 @@
 package br.com.fiap.pagamento.gateway.messaging.pedido;
 
-import br.com.fiap.pagamento.gateway.dataprovider.pedido.PedidoStatusDto;
 import br.com.fiap.pagamento.gateway.messaging.IPedidoQueue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -27,7 +26,7 @@ public class PedidoQueue implements IPedidoQueue {
     @Override
     public void publicarAtualizacaoStatusPedido(Integer pedidoId) {
         rabbitTemplate.setMessageConverter(messageConverter);
-        rabbitTemplate.convertAndSend(filaPedidosPagos, new PedidoStatusDto(pedidoId,2));
+        rabbitTemplate.convertAndSend(filaPedidosPagos, new PedidoStatusDto(pedidoId, 2));
     }
 
 }
