@@ -33,13 +33,14 @@ public class GerenciarPagamentoUseCase implements IGerenciarPagamento {
     public void validaPagamento(String pagamentoId, PagamentoRequest request) {
 
         final var pagamento = pagamentoRepository.buscarPorId(UUID.fromString(pagamentoId));
-        final var checkPagamento = pagamentoDataProvider.validaPagamento(request.data().id());
+        final var checkPagamento = pagamentoDataProvider.validaPagamento(request.action());
         if (checkPagamento) {
             pagamento.setStatus(StatusEnum.PAGO);
+            pedidoQueue.publicarAtualizacaoStatusPedido(pagamento.getPedidoId());
         }
         final var entity = pagamentoRepository.salvar(pagamento);
-        pedidoQueue.publicarAtualizacaoStatusPedido(entity.getPedidoId());
-        clienteQueue.publicarResultadoPagamento(entity, checkPagamento);
+        if(entity.getDocumentoCliente() != null && !entity.getDocumentoCliente().isBlank())
+            clienteQueue.publicarResultadoPagamento(entity, checkPagamento);
     }
 
     @Override
