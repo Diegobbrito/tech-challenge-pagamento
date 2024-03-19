@@ -1,7 +1,6 @@
 package br.com.fiap.pagamento.gateway.dataprovider.pagamento;
 
 import br.com.fiap.pagamento.api.dto.request.ProdutoRequest;
-import br.com.fiap.pagamento.api.dto.request.ProdutoSelecionadoRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,40 +42,29 @@ class PagamentoDataProviderTest {
                 "Hamburguer",
                 "Hamburguer da casa",
                 new BigDecimal("19.99"),
-                1,
+
                 "");
-        ProdutoSelecionadoRequest produtoSelecionado = new ProdutoSelecionadoRequest(produto, 1);
+
 
         when(dataProvider.criarPagamento(any(), any())).thenReturn("qrData");
 
-        var pagamento = pedidoDataProvider.criarPagamento(List.of(produtoSelecionado), "");
+        var pagamento = pedidoDataProvider.criarPagamento(List.of(produto), "");
 
         assertThat(pagamento)
                 .isInstanceOf(String.class)
-                .isNotNull();
-        assertThat(pagamento)
+                .isNotNull()
                 .isEqualTo("qrData");
     }
 
     @Test
     void testValidarPagamento() {
-
-        ProdutoRequest produto = new ProdutoRequest(
-                "Hamburguer",
-                "Hamburguer da casa",
-                new BigDecimal("19.99"),
-                1,
-                "");
-        ProdutoSelecionadoRequest produtoSelecionado = new ProdutoSelecionadoRequest(produto, 1);
-
         when(dataProvider.validaPagamento(anyString())).thenReturn(true);
 
         var pagamento = pedidoDataProvider.validaPagamento("");
 
         assertThat(pagamento)
                 .isInstanceOf(Boolean.class)
-                .isNotNull();
-        assertThat(pagamento)
-                .isEqualTo(true);
+                .isNotNull()
+                .isTrue();
     }
 }
