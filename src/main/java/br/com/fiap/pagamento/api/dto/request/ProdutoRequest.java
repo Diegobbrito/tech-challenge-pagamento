@@ -12,7 +12,5 @@ public record ProdutoRequest (
         String descricao,
         @Schema(example = "29,90")
         BigDecimal valor,
-        @Schema(example = "1")
-        Integer categoriaId,
         String imagemUrl) {
 }
