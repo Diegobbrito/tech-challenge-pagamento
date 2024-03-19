@@ -1,6 +1,6 @@
 package br.com.fiap.pagamento.gateway.dataprovider.pagamento;
 
-import br.com.fiap.pagamento.api.dto.request.ProdutoSelecionadoRequest;
+import br.com.fiap.pagamento.api.dto.request.ProdutoRequest;
 import br.com.fiap.pagamento.gateway.dataprovider.IPagamentoDataProvider;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class PagamentoDataProvider implements IPagamentoDataProvider {
     }
 
     @Override
-    public String criarPagamento(List<ProdutoSelecionadoRequest> produtos, String cliente) {
+    public String criarPagamento(List<ProdutoRequest> produtos, String cliente) {
         return dataProvider.criarPagamento(produtos, cliente);
     }
 
