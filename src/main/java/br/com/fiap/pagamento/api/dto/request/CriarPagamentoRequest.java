@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record CriarPagamentoRequest(
-        List<ProdutoSelecionadoRequest> produtos,
+        List<ProdutoRequest> produtos,
         @Schema(example = "055.069.020-42")
         String cpf,
 
